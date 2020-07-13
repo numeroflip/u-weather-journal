@@ -1,0 +1,29 @@
+{
+  "name": "u-weather-journal",
+  "version": "1.0.0",
+  "description": "[Click here to see the page](https://numeroflip.github.io/u_landing_page/) ## What is it? Mainly a vanilla JavaScript excercise. There isn't much going on in the index.html file at the beginning. With some JS, there will be 4 random post about trees generated when the page loads. If you refresh the page you get different ones. At the end of the page, there is an \"add more\" button, if you click on it, there will be more content added.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npm run sass && npm run auto-serve",
+    "sass": "sass --watch website/sass/style.scss website/css/style.css",
+    "auto-serve": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/numeroflip/u-weather-journal.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/numeroflip/u-weather-journal/issues"
+  },
+  "homepage": "https://github.com/numeroflip/u-weather-journal#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "node-sass": "^4.14.1",
+    "nodemon": "^2.0.4"
+  }
+}
