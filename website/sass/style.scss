@@ -1,1 +1,28 @@
 @import './materialize.scss';
+
+body {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+}
+
+.brand-logo {
+    position: relative;
+}
+
+
+#textarea-main {
+    min-height: 5rem;
+    max-width: 800px;
+}
+
+
+.latest-entry-header {
+    font-size: 2rem;
+}
+
+main {
+    margin: auto auto;
+}
+
+
