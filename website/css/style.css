@@ -8114,4 +8114,14 @@ main {
   margin: auto auto;
 }
 
+.article-author {
+  margin-right: 2rem;
+}
+
+.article-date,
+.article-author {
+  display: inline-block;
+  margin-top: 0;
+}
+
 /*# sourceMappingURL=style.css.map */

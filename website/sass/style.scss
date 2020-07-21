@@ -16,7 +16,6 @@ body {
     max-width: 800px;
 }
 
-
 .latest-entry-header {
     font-size: 2rem;
 }
@@ -25,4 +24,14 @@ main {
     margin: auto auto;
 }
 
+.article-author {
+    margin-right: 2rem;
+}
+
+
+.article-date,
+.article-author {
+    display: inline-block;
+    margin-top: 0;
+}
 
