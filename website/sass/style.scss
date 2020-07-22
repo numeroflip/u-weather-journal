@@ -16,6 +16,10 @@ body {
     max-width: 800px;
 }
 
+#add-entry-section {
+    padding-top: 4rem;
+}
+
 .latest-entry-header {
     font-size: 2rem;
 }
@@ -28,10 +32,26 @@ main {
     margin-right: 2rem;
 }
 
+.article {
 
-.article-date,
-.article-author {
-    display: inline-block;
-    margin-top: 0;
+    &-title {
+        font-size: 2rem;
+    }
+
+    &-date,
+    &-author {
+        display: inline-block;
+        margin-top: 0;
+    }
+
+    &-body {
+        padding: none;   
+    }
 }
+
+#entries-header {
+    margin-bottom: 4rem;
+}
+
+
 

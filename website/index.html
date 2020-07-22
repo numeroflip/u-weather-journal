@@ -11,7 +11,7 @@
     <title>Weather Journal</title>
   </head>
 
-  <body>
+  <body class="blue lighten-5">
       <!----------- NAV-------------- -->
       <nav>
         <div class="nav-wrapper container">
@@ -27,11 +27,10 @@
             
     <!-- ----------------__MAIN---------------------- -->
     <main>
-        <article class="container section">
-          <h2 class="center">Add a Journal entry</h2>
+        <article class="container section" id="add-entry-section">
            <form class="card-panel row" action="">
 
-                <h5 class="col s12">Header text</h5>
+                <h2 class="col s12 center">Add a Journal entry</h5>
                 <div class="input-field col s12">
                   <i class="material-icons prefix">chevron_right</i>
                   <input required type="text" id="title-input">
@@ -45,48 +44,30 @@
                 </div>
 
                 <div class="input-field col m6">
+                  <!-- <i class="material-icons prefix">location_on</i>
+                  <input required type="text" id="zip">
+                  <label for="location" class="active">Enter Zip Code Here</label> -->
                   <i class="material-icons prefix">location_on</i>
-                  <input required type="text" id="location">
-                  <label for="location" class="active">Location / ZIP code</label>
+                  <input type="text" id="zip" class="autocomplete">
+                  <label for="autocomplete-input">Enter Zip Code Here</label>
                 </div>
 
                 <div class="input-field col s12">
-                  <i class="material-icons prefix">mode_edit</i>
-                  <textarea required type="text" id="textarea-main" class="materialize-textarea"></textarea>
-                  <label for="textarea" class="active">Journal content</label>
+                  <i class="material-icons prefix">textsms</i>
+                  <textarea required type="text" id="feelings" class="materialize-textarea"></textarea>
+                  <label for="textarea" class="active">How do You Feel?</label>
                 </div>
                 <!-- --------BUTTON---------- -->
                 <div class="input-field col textarea-wrapper-main center-align s12">
-                  <button id="submit-btn" class="btn btn-large waves-effect waves-light center-align" type="submit" name="action">Submit
+                  <button id="generate" class="btn btn-large waves-effect waves-light center-align" type="submit" name="action">Add
                     <i class="material-icons right">send</i>
                   </button>
                 </div>
            </form>
         </article>
-
+<!-- -----------------------------------Entries Section------------------------------------- -->
         <section class="articles-section container" id="entries-wrapper">
-          <h2 class="articles-title center">Latest Entries</h2>
-          <!-- <article class="card-panel row">
-              <figure class="col s2 figure">
-                <img src="#" alt="weather-image">
-              </figure>
-              <div class="separator col s9">
-                <h3 class="article-title">Article title</h3>
-                <p class="article-author">Article author</p>
-                <p class="article-date grey-text text-darken-2">Article date</p>
-              </div>
-              <p class="article-body col s12">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Non ipsam provident repellendus quaerat perferendis officiis accusantium doloremque nemo officia totam, mollitia fuga odit culpa ab, hic dignissimos, soluta assumenda voluptatum?</p>
-          </article> -->
-
-          <ul class="pagination">
-            <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-            <li class="active"><a href="#!">1</a></li>
-            <li class="waves-effect"><a href="#!">2</a></li>
-            <li class="waves-effect"><a href="#!">3</a></li>
-            <li class="waves-effect"><a href="#!">4</a></li>
-            <li class="waves-effect"><a href="#!">5</a></li>
-            <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-          </ul>
+          <h2 class="articles-title center" id="entries-header">Latest Entries</h2>
         </section>
         <!-- TODO: create the entry layout -->
         <!-- TODO: maybe some pagination too -->

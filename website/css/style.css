@@ -8106,6 +8106,10 @@ body {
   max-width: 800px;
 }
 
+#add-entry-section {
+  padding-top: 4rem;
+}
+
 .latest-entry-header {
   font-size: 2rem;
 }
@@ -8118,10 +8122,19 @@ main {
   margin-right: 2rem;
 }
 
-.article-date,
-.article-author {
+.article-title {
+  font-size: 2rem;
+}
+.article-date, .article-author {
   display: inline-block;
   margin-top: 0;
+}
+.article-body {
+  padding: none;
+}
+
+#entries-header {
+  margin-bottom: 4rem;
 }
 
 /*# sourceMappingURL=style.css.map */
