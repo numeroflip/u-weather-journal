@@ -6,7 +6,7 @@
     <!--Import materialize.css-->
     <link rel="stylesheet" href="./css/style.css">
     <!--Let browser know website is optimized for mobile-->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;900&display=swap" rel="stylesheet"> 
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap" rel="stylesheet"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Weather Journal</title>
   </head>
@@ -31,11 +31,6 @@
            <form class="card-panel row" action="">
 
                 <h2 class="col s12 center">Add a Journal entry</h5>
-                <div class="input-field col s12">
-                  <i class="material-icons prefix">chevron_right</i>
-                  <input required type="text" id="title-input">
-                  <label for="title-input" class="active">Entry Title</label>
-                </div>
 
                 <div class="input-field col m6">
                   <i class="material-icons prefix">account_circle</i>
@@ -44,9 +39,6 @@
                 </div>
 
                 <div class="input-field col m6">
-                  <!-- <i class="material-icons prefix">location_on</i>
-                  <input required type="text" id="zip">
-                  <label for="location" class="active">Enter Zip Code Here</label> -->
                   <i class="material-icons prefix">location_on</i>
                   <input type="text" id="zip" class="autocomplete">
                   <label for="autocomplete-input">Enter Zip Code Here</label>
@@ -69,8 +61,6 @@
         <section class="articles-section container" id="entries-wrapper">
           <h2 class="articles-title center" id="entries-header">Latest Entries</h2>
         </section>
-        <!-- TODO: create the entry layout -->
-        <!-- TODO: maybe some pagination too -->
     </main>
     <!-- -------------------FOOTER----------------------------- -->
     <footer class="page-footer">
@@ -88,4 +78,6 @@
     <script src ="js/app.js"></script>
   </body>
 </html>
+
+
       

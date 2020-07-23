@@ -29,29 +29,85 @@ main {
 }
 
 .article-author {
+    margin : 0;
     margin-right: 2rem;
+    padding: .1rem .5rem;
 }
 
 .article {
 
+    &-card {
+        display: grid;
+        grid-template-areas: "weather main";
+        justify-items: center;
+        align-items: center;
+        justify-content: flex-start;
+    }
+
+    &-text-wrapper {
+        grid-area: main;
+    }
     &-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
     }
-
-    &-date,
-    &-author {
-        display: inline-block;
-        margin-top: 0;
-    }
-
     &-body {
         padding: none;   
     }
+    &-meta-wrapper {
+        display: flex;
+        align-items: center;
+    }
+    &-date {
+        display: flex;
+        align-items: center;
+    }
+}
+
+figure {
+    margin: 0;
+    padding: 0;
 }
 
 #entries-header {
     margin-bottom: 4rem;
 }
 
+.weather-figure {
+    grid-area: weather;
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 150px;
+    overflow: hidden;
+}
 
+.weather-figcaption {
+    text-align: center;
+    font-weight: 700;
+}
+
+.weather-image {
+width: 100%;
+object-fit: cover;
+}
+.loc-icon {
+    margin-right: .5rem;
+}
+
+@media (max-width: 600px) {
+    .article-card {
+        grid-template-areas: 
+            "main"
+            "weather";
+        grid-template-columns: 1fr;
+        grid-auto-flow: row;
+    }
+
+    .article-meta-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
 
