@@ -46,8 +46,6 @@ class Entry {
   };
 };
 
-
-
 // **************************************************************************
 // ------------------------------FUNCTIONS-----------------------------------
 // **************************************************************************
@@ -82,22 +80,16 @@ function insertEntryHTML(entryData) {
   entriesHeader.insertAdjacentHTML('afterend', getEntryHTML(entryData))
 };
 
-
-
 function renderPageEntries(entries) {
-  console.log(entries)
   entries.forEach((entry) => {
     insertEntryHTML(entry)
   })
 };
 
-
-
 //----------------------__DEALING WITH DATA___---------------------- 
 // Fetching
 const getPageData = async (url = '/') => {
   try {
-    console.info('Getting page data...')
     let data = await fetch (url);
     data = await data.json();
 
@@ -110,13 +102,11 @@ async function getLocations(zip) {
   try {
     const response = await fetch(url);
     let data = await response.json();
-    console.log(data);
     return data;
   }  catch(err) {console.log(err)};
 };
 
 async function getWeather(locationKey) {
-  console.log('getWeatherFired');
   const url = corsPrepend + apiData.baseUrls.currentWeather + locationKey + '?apikey=' + apiData.key;
   try {
     let response = await fetch(url).then((resolve) => resolve.json());
@@ -168,20 +158,13 @@ async function handleSubmit(e) {
 
   e.preventDefault();
   const city = locationField.value.split(" ")[1];
-  console.log(city);
   const index = possibleLocations.map((location) => location.city).indexOf(city);
-  console.log(index);
-
   const data = {
     author: nameField.value,
     body: textareaField.value,
     location: possibleLocations[index]
   };
-
-  console.log ("submitted and data is defined");
   const entryData = new Entry(data);
-  console.log(entryData);
-
   try {
     entryData.weather = await getWeather(entryData.location.locationKey)
     postData('/addEntry', entryData);
@@ -202,7 +185,6 @@ function addToDropDown(locations) {
 
 async function handleLocationDropdown(e) {
   const value = e.target.value;
-  console.log('Location change handling fired')
   instance.updateData({});
   if(isNaN(value.slice(0, 4))) {e.target.classList.add('invalid')}
   else {e.target.classList.remove('invalid');};
