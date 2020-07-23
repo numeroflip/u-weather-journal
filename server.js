@@ -5,14 +5,28 @@ const app = express();
 let port = process.env.PORT;
 if (port == null || port == "") {
   port = 8000;
+}
 const fs = require('fs');
-// BaseUrl
 
-
-// GET /locations/v1/postalcodes/search?apikey=WJDCsvHiNT5AMwGVS9IvROBmTOYJUjnM&q=9400 HTTP/1.1
-
-
-
+// Connect to PostgreSQL database
+const { Client } = require('pg')
+const client = new Client({
+    host: 'ec2-54-247-103-43.eu-west-1.compute.amazonaws.com',
+    port: 5432,
+    user: 'nxbqvrjyuvvfrm',
+    password: '9b145f7841e5b994c7f6d8ad86e2fddd4c4d1a3aa5b4fca8dccd173c6fe3a33e',
+})
+client.connect(err => {
+    if (err) {
+      console.error('connection error', err.stack)
+    } else {
+      console.log('connected')
+    }
+  })
+client.query('SELECT $1::text as message', ['Hello world!'], (err, res) => {
+  console.log(err ? err.stack : res.rows[0].message) // Hello World!
+  client.end()
+})
 
 
 // Create endpoint
