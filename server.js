@@ -10,14 +10,16 @@ let port = process.env.PORT;
 if (port == null || port == "") {
     port = 8000;
 }
+
 const fs = require('fs');
 
 // Connect to PostgreSQL database
 const { Pool } = require('pg');
 const pool = new Pool({
-    "max": 10,
-    "connectionTimeoutMillis" : 0,
-    "idleTimeoutMillis" : 0
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false
+    }
 });
 
 
