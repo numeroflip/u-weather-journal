@@ -2,53 +2,54 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
+
+// Environmental variables
+const dotenv = require('dotenv');
+dotenv.config();
 let port = process.env.PORT;
 if (port == null || port == "") {
-  port = 8000;
+    port = 8000;
 }
 const fs = require('fs');
 
 // Connect to PostgreSQL database
-const { Client } = require('pg')
-const client = new Client({
-    host: 'ec2-54-247-103-43.eu-west-1.compute.amazonaws.com',
-    port: 5432,
-    user: 'nxbqvrjyuvvfrm',
-    password: '9b145f7841e5b994c7f6d8ad86e2fddd4c4d1a3aa5b4fca8dccd173c6fe3a33e',
-})
-client.connect(err => {
-    if (err) {
-      console.error('connection error', err.stack)
-    } else {
-      console.log('connected')
-    }
-  })
-client.query('SELECT $1::text as message', ['Hello world!'], (err, res) => {
-  console.log(err ? err.stack : res.rows[0].message) // Hello World!
-  client.end()
-})
+const { Pool } = require('pg');
+const pool = new Pool({
+    "max": 10,
+    "connectionTimeoutMillis" : 0,
+    "idleTimeoutMillis" : 0
+});
 
 
+async function addEntryToDb(data) {
+    try {
+        const query = `
+        INSERT INTO 
+        entries (
+            author,
+            city,
+            post_content, 
+            country, 
+            posting_date, 
+            weather_code, 
+            weather_description, 
+            temp_cels
+        ) VALUES ( 
+             '${data.author}', 
+             '${data.city}', 
+             '${data.post_content}', 
+             '${data.country}', 
+             '${new Date(data.posting_date).toISOString()}', 
+             ${data.weather_code}, 
+             '${data.weather_description}', 
+             ${data.temp_cels});
+        `
+        await pool.query(query)
+    } catch(err) {console.log(err)};
+};
+//'${new Date().toISOString().split("T")[0]}',
 // Create endpoint
 let projectData;
-readFile();
-
-function addToData(data) {
-    projectData.entries.push(data);
-};
-
-function writeFile(file = './data.json') {
-    fs.writeFileSync(file, JSON.stringify(projectData) ,'utf8')
-};   
-
-function readFile(file = './data.json') {
-    projectData = JSON.parse(fs.readFileSync(file, 'utf8'))
-};
-
-if (!fs.readFileSync('./data.json', 'utf8')) {
-    projectData = {entries: [], pages: 1};
-    writeFile();
-};
 
 // MIDDLEWARE
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -60,22 +61,51 @@ app.use(cors());
 app.use(express.static('website'));
 // Start the server
 app.listen(port, () => console.log(`server is running on port ${port}`));
+
+
+async function getData() {
+    try {
+        let response = await pool.query('SELECT * FROM entries;');
+        response = response.rows;
+        return response;
+        
+    } catch(err) {console.log(err)}
+}
+getData();
+
 // GET route
-app.get('/get-data', (req, res) => {
-    console.log('GET requested')
-    res.send(JSON.stringify(projectData));
+app.get('/get-database', async (req, res) => {
+    try {
+        let data = await getData()
+        res.send(JSON.stringify(data))
+
+    } catch(err) {console.log(err)}
 });
-console.log('GET route is set');
+
 // POST route
 app.post('/addEntry', handlePOST);
-console.log('POST route is set');
-
 
 async function handlePOST(req, res) {
-    console.log('POST happened');
-    let postedData = req.body;    
-    addToData(req.body);
-    writeFile();
-    readFile();
+    let postedData = req.body;
+    await addEntryToDb(postedData);
+    let response = await getData();
+    res.send(JSON.stringify(response))
 }
+
+let testEntry = {
+    author: 'GÁBOR',
+    post_content: 'I wish I were Spongebob',
+    city: 'I love cities',
+    country: 'Slovenia',
+    posting_date: new Date(),
+    weather_code: '12',
+    weather_description: 'SUNNY',
+    temp_cels: '23'
+}
+
+function test() {
+    addEntryToDb(testEntry);
+}
+
+// test();
 

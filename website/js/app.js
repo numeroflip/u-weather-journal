@@ -22,56 +22,43 @@ const apiData = {
 const elem = document.querySelector('.autocomplete');
 const instance = M.Autocomplete.init(elem);
 
-// Entry class - this completely describes a journal entry's data
-class Entry {
-  constructor({author = "Unknown", body, location = {zip: undefined, city: undefined, country: undefined}, weather = undefined }) {
-      this.author = author;
-      this.body = body;
-      // date
-      this.date = {};
-      this.date.date = new Date;
-      this.date.year = this.date.date.getFullYear();
-      this.date.month = this.formatDate(this.date.date.getMonth());
-      this.date.day = this.formatDate(this.date.date.getDay());
-      // location
-      this.location = location;
-      this.weather = weather;
-  };
-
-  formatDate(num)  {
-    if (num < 10) {
-      num = '0' + num;
-    }
-    return num;
-  };
-};
-
-
-
 // **************************************************************************
 // ------------------------------FUNCTIONS-----------------------------------
 // **************************************************************************
 
-// ---------------------HTML and DOM related---------------
 
-const getEntryHTML = ({author, date, body, location, weather}) => {
-  formatedDate = `${date.year}-${date.month}-${date.day}`
+
+
+// ---------------------HTML and DOM related---------------
+const getEntryHTML = ({
+  author, 
+  posting_date, 
+  post_content, 
+  city,
+  country, 
+  weather_code, 
+  weather_description,
+  temp_cels
+  }) => {
+  const formatedDat = posting_date.split("T")[0];
+  
+  // The HTML of a post entry
   const entryHTML = `
       <article class=" card-panel article-card">
           <figure class=" figure  weather-figure">
-              <img class="weather-image" src="./assets/weather_icons/${weather.icon}.png" alt="${weather.description}">
-              <figcaption class="weather-figcaption">${weather.tempCels} C° </figcaption>
+              <img class="weather-image" src="./assets/weather_icons/${weather_code}.png" alt="${weather_description}">
+              <figcaption class="weather-figcaption">${temp_cels} C° </figcaption>
           </figure>
           <div class="article-text-wrapper ">
-              <h3 class="article-title">${formatedDate}</h3>
+              <h3 class="article-title">${formatedDat}</h3>
               <div class="article-meta-wrapper">
                 <p class="article-author blue white-text card">${author}</p>
                 <p class="article-date grey-text text-darken-2">
                 <i class="tiny material-icons loc-icon">location_on</i>
-                  ${location.city} - ${location.country}
+                  ${city} - ${country}
                 </p>
               </div>
-              <p class="article-body">${body}</p>
+              <p class="article-body">${post_content}</p>
           </div>
       </article>
   `
@@ -82,8 +69,6 @@ function insertEntryHTML(entryData) {
   entriesHeader.insertAdjacentHTML('afterend', getEntryHTML(entryData))
 };
 
-
-
 function renderPageEntries(entries) {
   console.log(entries)
   entries.forEach((entry) => {
@@ -91,17 +76,15 @@ function renderPageEntries(entries) {
   })
 };
 
-
-
 //----------------------__DEALING WITH DATA___---------------------- 
 // Fetching
 const getPageData = async (url = '/') => {
+  if(url == '/get-database') {console.log("database-data is requested")};
   try {
     console.info('Getting page data...')
     let data = await fetch (url);
     data = await data.json();
-
-    return data.entries;
+    return data;
   } catch(err) {console.log(err)}
 };
 
@@ -125,7 +108,6 @@ async function getWeather(locationKey) {
     const weatherData = {
       description: response.WeatherText,
       icon: response.WeatherIcon,
-      iconUrl: `./assets/weather_icons/${this.icon}.png`,
       tempCels: response.Temperature.Metric.Value
     }
     return weatherData;
@@ -151,7 +133,7 @@ function processLocations(locObjects) {
 // ***************-POST DATA; SUBMIT BTN*******************
 const postData = async ( url = '', data = {}) => {
   try {
-    const response = await fetch(url, {
+    let response = await fetch(url, {
       method: 'POST', 
       credentials: 'same-origin',
       headers: {
@@ -159,42 +141,47 @@ const postData = async ( url = '', data = {}) => {
       },
       body: JSON.stringify(data),
     });
-    const newData = await response.json();
-
+    response = await response.json();
   } catch(err) {console.log(err)};
 };
 
 async function handleSubmit(e) {
 
   e.preventDefault();
-  const city = locationField.value.split(" ")[1];
-  console.log(city);
+  // Problem: there are many cities under the same zip code, but we need a specific location key...
+  // get back the selected city from the input field
+  const city = locationField.value.split(" / ")[1];
   const index = possibleLocations.map((location) => location.city).indexOf(city);
-  console.log(index);
+  const location = possibleLocations[index];
+  // Find the location key from the array of zip code matching locations based on the city name.
+  const key = location.locationKey;
 
-  const data = {
-    author: nameField.value,
-    body: textareaField.value,
-    location: possibleLocations[index]
-  };
 
   console.log ("submitted and data is defined");
-  const entryData = new Entry(data);
-  console.log(entryData);
 
   try {
-    entryData.weather = await getWeather(entryData.location.locationKey)
+    const weather = await getWeather(key)
+    const entryData = {
+      author: nameField.value,
+      post_content: textareaField.value,
+      city: location.city,
+      country: location.country,
+      posting_date: new Date().toISOString(),
+      weather_code: weather.icon,
+      weather_description: weather.description,
+      temp_cels: weather.tempCels
+    };
     postData('/addEntry', entryData);
     insertEntryHTML(entryData);
 
   } catch(err) {console.log(err)}
 };
 
-// ******************_DROPDOWN (Location autocomplete) **************************
+// *********_DROPDOWN (Location autocomplete) *************
 function addToDropDown(locations) {
   let data = {}
   locations.forEach((location) => {
-    const key = `${location.zip} ${location.city} ${location.country}`;
+    const key = `${location.zip} / ${location.city} / ${location.country}`;
     data[key] = null 
   })
   instance.updateData(data)
@@ -202,13 +189,13 @@ function addToDropDown(locations) {
 
 async function handleLocationDropdown(e) {
   const value = e.target.value;
-  console.log('Location change handling fired')
   instance.updateData({});
+  // check for zip code entry is valid(number)
   if(isNaN(value.slice(0, 4))) {e.target.classList.add('invalid')}
   else {e.target.classList.remove('invalid');};
 
+  //Only fetch if there is at least 4 number
   if(value.length >= 4 && !isNaN(value)) {
-
     try {
       let locations = await getLocations(value);
       possibleLocations = processLocations(locations);
@@ -218,13 +205,15 @@ async function handleLocationDropdown(e) {
   };
 };
 
+
 // ******************__MAIN FUNCTION__*********************
 async function init() {
 
   locationField.addEventListener('keyup', handleLocationDropdown);
   submitBtn.addEventListener('click', handleSubmit);
   try {
-    getPageData('/get-data').then((entries) => {if(entries) {renderPageEntries(entries)}}); 
+    const entries = await getPageData('/get-database')
+    if (entries) {renderPageEntries(entries)}
   } catch(err) {console.log(err)};
 };
 
