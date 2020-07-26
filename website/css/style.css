@@ -8133,16 +8133,21 @@ main {
 }
 .article-text-wrapper {
   grid-area: main;
+  padding: 0 1rem;
 }
 .article-title {
   font-size: 1.8rem;
 }
 .article-body {
   padding: none;
+  font-size: 1.1rem;
 }
 .article-meta-wrapper {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  border-bottom: 1px solid gray;
+  margin-top: -1rem;
 }
 .article-date {
   display: flex;
@@ -8188,11 +8193,19 @@ figure {
     grid-template-areas: "main" "weather";
     grid-template-columns: 1fr;
     grid-auto-flow: row;
+    margin: 2rem 0;
   }
-
+  .article-body {
+    font-size: 1.2rem;
+    border-bottom: 1px solid gray;
+    padding-bottom: 1.5rem;
+  }
   .article-meta-wrapper {
-    flex-direction: column;
-    align-items: flex-start;
+    padding-bottom: 0.5rem;
+    margin-top: 0;
+  }
+  .article-title {
+    margin-bottom: 0;
   }
 }
 

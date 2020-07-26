@@ -46,21 +46,28 @@ main {
 
     &-text-wrapper {
         grid-area: main;
+        padding: 0 1rem;
     }
     &-title {
         font-size: 1.8rem;
     }
     &-body {
         padding: none;   
+        font-size: 1.1rem;
     }
     &-meta-wrapper {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
+        border-bottom: 1px solid gray;
+        margin-top: -1rem;
     }
     &-date {
         display: flex;
         align-items: center;
     }
+
+
 }
 
 figure {
@@ -97,17 +104,33 @@ object-fit: cover;
 }
 
 @media (max-width: 600px) {
-    .article-card {
-        grid-template-areas: 
-            "main"
-            "weather";
-        grid-template-columns: 1fr;
-        grid-auto-flow: row;
+
+    .article {
+
+        &-card {
+            grid-template-areas: 
+                "main"
+                "weather";
+            grid-template-columns: 1fr;
+            grid-auto-flow: row;
+            margin: 2rem 0;
+        }
+        &-body {
+            font-size: 1.2rem;
+            border-bottom: 1px solid gray;
+            padding-bottom: 1.5rem;
+        }
+    
+        &-meta-wrapper {
+            padding-bottom: 0.5rem;
+            margin-top: 0;
+        }
+
+        &-title {
+            margin-bottom: 0;
+        }
     }
 
-    .article-meta-wrapper {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+
 }
 
