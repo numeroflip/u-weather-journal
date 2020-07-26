@@ -23,6 +23,7 @@ const pool = new Pool({
 
 async function addEntryToDb(data) {
     try {
+        await console.table(pool.query('SELECT * FROM entries'))
         const query = `
         INSERT INTO 
         entries (
@@ -44,7 +45,9 @@ async function addEntryToDb(data) {
              '${data.weather_description}', 
              ${data.temp_cels});
         `
+        console.log(query);
         await pool.query(query)
+        await console.table(pool.query('SELECT * FROM entries'))
     } catch(err) {console.log(err)};
 };
 // Create endpoint
