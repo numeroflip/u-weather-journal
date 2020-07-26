@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const prepareObjForSQL = require('./server_functions');
 const app = express();
 
 // Environmental variables
@@ -22,48 +23,31 @@ const pool = new Pool({
 
 
 async function addEntryToDb(data) {
+
+    const processedData = prepareObjForSQL(data);
+    const keys = Object.keys(processedData);
+    const values = Object.values(processedData)
+        .map(value => typeof value === 'string' ? `'${value}'` : value);
+
     try {
-        await console.table(pool.query('SELECT * FROM entries'))
-        const query = `
-        INSERT INTO 
-        entries (
-            author,
-            city,
-            post_content, 
-            country, 
-            posting_date, 
-            weather_code, 
-            weather_description, 
-            temp_cels
-        ) VALUES ( 
-             '${data.author}', 
-             '${data.city}', 
-             '${data.post_content}', 
-             '${data.country}', 
-             '${new Date(data.posting_date).toISOString()}', 
-             ${data.weather_code}, 
-             ${data.weather_description}, 
-             ${data.temp_cels});
+        const query = `INSERT INTO 
+        entries ( ${keys.join(',')})
+        VALUES ( ${values.join(',')});
         `
-        console.log(query);
         await pool.query(query)
-        await console.table(pool.query('SELECT * FROM entries'))
     } catch(err) {console.log(err)};
 };
-// Create endpoint
-let projectData;
 
 // MIDDLEWARE
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
-
 // Initalize the server files
 app.use(express.static('website'));
+
 // Start the server
 app.listen(port, () => console.log(`server is running on port ${port}`));
-
 
 async function getData() {
     try {
@@ -73,7 +57,6 @@ async function getData() {
         
     } catch(err) {console.log(err)}
 }
-getData();
 
 // GET route
 app.get('/get-database', async (req, res) => {
@@ -91,25 +74,9 @@ async function handlePOST(req, res) {
     try {
         let postedData = req.body;
         await addEntryToDb(postedData);
-        let response = await getData();
-        res.send(JSON.stringify(response))
+        // let response = await getData();
+        // res.send(JSON.stringify(response))
     } catch(err) {console.log(err)}
 }
 
-let testEntry = {
-    author: 'GÁBOR',
-    post_content: 'I wish I were Spongebob',
-    city: 'I love cities',
-    country: 'Slovenia',
-    posting_date: new Date(),
-    weather_code: '12',
-    weather_description: 'SUNNY',
-    temp_cels: '23'
-}
-
-function test() {
-    addEntryToDb(testEntry);
-}
-
-// test();
 

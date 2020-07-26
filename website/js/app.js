@@ -161,7 +161,7 @@ async function handleSubmit(e) {
       posting_date: new Date().toISOString(),
       weather_code: weather.icon,
       weather_description: weather.description,
-      temp_cels: weather.tempCels
+      temp_cels: weather.tempCels,
     };
     postData('/addEntry', entryData);
     insertEntryHTML(entryData);
