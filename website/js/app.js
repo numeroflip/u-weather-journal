@@ -70,7 +70,6 @@ function insertEntryHTML(entryData) {
 };
 
 function renderPageEntries(entries) {
-  console.log(entries)
   entries.forEach((entry) => {
     insertEntryHTML(entry)
   })
@@ -79,9 +78,7 @@ function renderPageEntries(entries) {
 //----------------------__DEALING WITH DATA___---------------------- 
 // Fetching
 const getPageData = async (url = '/') => {
-  if(url == '/get-database') {console.log("database-data is requested")};
   try {
-    console.info('Getting page data...')
     let data = await fetch (url);
     data = await data.json();
     return data;
@@ -93,13 +90,11 @@ async function getLocations(zip) {
   try {
     const response = await fetch(url);
     let data = await response.json();
-    console.log(data);
     return data;
   }  catch(err) {console.log(err)};
 };
 
 async function getWeather(locationKey) {
-  console.log('getWeatherFired');
   const url = corsPrepend + apiData.baseUrls.currentWeather + locationKey + '?apikey=' + apiData.key;
   try {
     let response = await fetch(url).then((resolve) => resolve.json());
@@ -155,9 +150,6 @@ async function handleSubmit(e) {
   const location = possibleLocations[index];
   // Find the location key from the array of zip code matching locations based on the city name.
   const key = location.locationKey;
-
-
-  console.log ("submitted and data is defined");
 
   try {
     const weather = await getWeather(key)

@@ -11,8 +11,6 @@ if (port == null || port == "") {
     port = 8000;
 }
 
-const fs = require('fs');
-
 // Connect to PostgreSQL database
 const { Pool } = require('pg');
 const pool = new Pool({
@@ -49,7 +47,6 @@ async function addEntryToDb(data) {
         await pool.query(query)
     } catch(err) {console.log(err)};
 };
-//'${new Date().toISOString().split("T")[0]}',
 // Create endpoint
 let projectData;
 
@@ -88,10 +85,12 @@ app.get('/get-database', async (req, res) => {
 app.post('/addEntry', handlePOST);
 
 async function handlePOST(req, res) {
-    let postedData = req.body;
-    await addEntryToDb(postedData);
-    let response = await getData();
-    res.send(JSON.stringify(response))
+    try {
+        let postedData = req.body;
+        await addEntryToDb(postedData);
+        let response = await getData();
+        res.send(JSON.stringify(response))
+    } catch(err) {console.log(err)}
 }
 
 let testEntry = {
