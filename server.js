@@ -42,7 +42,7 @@ async function addEntryToDb(data) {
              '${data.country}', 
              '${new Date(data.posting_date).toISOString()}', 
              ${data.weather_code}, 
-             '${data.weather_description}', 
+             ${data.weather_description}, 
              ${data.temp_cels});
         `
         console.log(query);
