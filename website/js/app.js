@@ -50,9 +50,9 @@ const getEntryHTML = ({
               <figcaption class="weather-figcaption">${temp_cels} C° </figcaption>
           </figure>
           <div class="article-text-wrapper ">
-              <h3 class="article-title">${formatedDat}</h3>
+              <h3 class="article-title">${author}</h3>
               <div class="article-meta-wrapper">
-                <p class="article-author blue white-text card">${author}</p>
+                <p class="article-author blue white-text card">${formatedDat}</p>
                 <p class="article-date grey-text text-darken-2">
                 <i class="tiny material-icons loc-icon">location_on</i>
                   ${city} - ${country}
