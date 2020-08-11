@@ -74,8 +74,6 @@ async function handlePOST(req, res) {
     try {
         let postedData = req.body;
         await addEntryToDb(postedData);
-        // let response = await getData();
-        // res.send(JSON.stringify(response))
     } catch(err) {console.log(err)}
 }
 

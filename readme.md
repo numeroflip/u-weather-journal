@@ -16,30 +16,6 @@ It is my first project, tinkering around with server side Javascript, Postgres a
 * PostgreSQL as a database
 * AccuWeather API
 
-<!-- ## How does it work? -->
-
-<!-- ### Server side:
-* Server starts.
-* Sets up routes.
-* Reads in .json data.
-* If it gets a POST request:
-* * Updates the project data.
-* * Writes it into the .json file.
-* * Reads the .json file to update the project data.
-
-### Client side: 
-
-* Request for the entries from the server.
-* Render the page based on the given data.
-* Creates the class: Entry (to contain all the data of a journal entry).
-* If at least 4 number is typed into the Zip code field, it sends a query to the API.
-* Opens a dropdown with the matching locations based on the API response.
-* After you submit: 
-* * It creates a new Entry with the data.
-* * It processes the location info, and finds the proper location key.
-* * It sends a weather information query to the API.
-* * Updates the Entry data.
-* * Sends a POST request to the server, and updates the DOM with the new entry. -->
 
 ## But... Why?
 I started learning web development years ago, followed a bunch of tutorials, but never felt confident enough with my skills. Now I enrolled for the free month of Udacity's [Front End nanodegree](https://www.udacity.com/course/front-end-web-developer-nanodegree--nd0011), to check it out. 
