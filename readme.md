@@ -1,5 +1,11 @@
 # Weather Journal
 
+## Preview
+
+![](./preview.gif)
+
+[Live Demo](https://u-weather-journal.herokuapp.com/)
+
 ## What is it?
 
  An excercise site made from scratch.
@@ -22,4 +28,9 @@ I started learning web development years ago, followed a bunch of tutorials, but
 
 To practice, I made this site from scratch. The new things were for me the Node.js part and the database. Besides It is my first time trying out a CSS framework. It is kinda nice, a bit faster to create a site, but a lot less control, and a bunch of tinkering with it... It was fun, I have learned a lot. 
 
+## Random Quote
+
+> I get the biggest enjoyment from the random and unexpected places. Linux on cellphones or refrigerators, just because it's so not what I envisioned it. Or on supercomputers.
+
+-Linus Torvalds
 
