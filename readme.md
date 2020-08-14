@@ -13,6 +13,21 @@
 
 It is my first project, tinkering around with server side Javascript, Postgres and even a CSS framework.
 
+## Technologies used
+* HTML
+* SASS, MaterializeCSS
+* JavaScript
+* Node.js and Express as a server 
+* PostgreSQL as a database
+* AccuWeather API
+
+
+## But... Why?
+I started learning web development years ago, followed a bunch of tutorials, but never felt confident enough with my skills. Now I enrolled for the free month of Udacity's [Front End nanodegree](https://www.udacity.com/course/front-end-web-developer-nanodegree--nd0011), to check it out. 
+
+To practice, I made this site from scratch. The new things were for me the Node.js part and the database. Besides It is my first time trying out a CSS framework. It is kinda nice, a bit faster to create a site, but a lot less control, and a bunch of tinkering with it... It was fun, I have learned a lot. 
+
+
 ## Setting up
 
 ### Requirements
@@ -65,19 +80,6 @@ npm start
 
 If all went well the site will open with a test post stating that the database is connected. If you don't see any post with a 'Test author' then the database is not connected to the server, and there is likely an error message in your terminal about it.
 
-## Technologies used
-* HTML
-* SASS, MaterializeCSS
-* JavaScript
-* Node.js and Express as a server 
-* PostgreSQL as a database
-* AccuWeather API
-
-
-## But... Why?
-I started learning web development years ago, followed a bunch of tutorials, but never felt confident enough with my skills. Now I enrolled for the free month of Udacity's [Front End nanodegree](https://www.udacity.com/course/front-end-web-developer-nanodegree--nd0011), to check it out. 
-
-To practice, I made this site from scratch. The new things were for me the Node.js part and the database. Besides It is my first time trying out a CSS framework. It is kinda nice, a bit faster to create a site, but a lot less control, and a bunch of tinkering with it... It was fun, I have learned a lot. 
 
 ## Random Quote
 
