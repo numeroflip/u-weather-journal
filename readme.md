@@ -13,6 +13,57 @@
 
 It is my first project, tinkering around with server side Javascript, Postgres and even a CSS framework.
 
+## Setting up
+
+### Requirements
+You have to have these installed:
+* [Nodejs](https://nodejs.org/en/)
+* [PostgreSQL](https://www.postgresql.org/)
+
+### Installation
+```
+npm install
+```
+
+### Setting up a local Postgres database
+
+First Create a database and connect to it.
+```
+CREATE DATABASE journal
+\c journal
+```
+Create a the table and a test entry by running the provided `starter.sql` file
+
+Note: this command oly works if your terminal is in the root folder of the project (u-weather-journal). If not, you have to provide the full path to the `starter.sql` file.
+```
+\i starter.sql
+```
+
+### Setting up the `.env` file
+
+To be able to connect to the database you will need a `.env` file.
+To create it run this command from the root folder of the project.
+```
+touch .env
+```
+Open it with the text editor of your choice and insert this data, completing the `PGUSER`, the `PGDATABASE` and the `PGPASSWORD` 
+
+Note: the default `PGPORT` is 5432, only change it if you know yours is different.
+```
+PGHOST='localhost'
+PGUSER='your postgres username'
+PGDATABASE=your database name
+PGPASSWORD='your password to the postgres user'
+PGPORT=5432
+```
+
+### Start
+
+```
+npm start
+```
+
+If all went well the site will open with a test post stating that the database is connected. If you don't see any post with a 'Test author' then the database is not connected to the server, and there is likely an error message in your terminal about it.
 
 ## Technologies used
 * HTML
