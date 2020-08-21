@@ -29,13 +29,14 @@ function validateString(str, regExp) {
   return Boolean(regExp.exec(str));
 }
 
-function validateInput(e) {
-  let value = e.target.value;
+function validateInput(element) {
+  const value = element.value;
+  console.log(value)
   if (validateString(value, zipRegExp)) {
-    e.target.classList.remove('invalid')
-    e.target.classList.add('valid')
+    element.classList.remove('invalid')
+    element.classList.add('valid')
   } else {
-    e.target.classList.add('invalid')
+    element.classList.add('invalid')
   }
 
 }
@@ -221,8 +222,9 @@ async function handleLocationDropdown(e) {
 
 // ******************__MAIN FUNCTION__*********************
 async function init() {
+  locationField.value = "";
   locationField.oninput = handleLocationDropdown;
-  locationField.onchange = validateInput;
+  locationField.onchange = (e) => validateInput(e.target);
   submitBtn.addEventListener('click', handleSubmit);
 
   try {
