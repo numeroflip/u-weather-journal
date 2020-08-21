@@ -21,11 +21,29 @@ const apiData = {
 // create a materializecss dropdown instance, for locatin autocomplete
 const elem = document.querySelector('.autocomplete');
 const instance = M.Autocomplete.init(elem);
+const zipRegExp = /\d{4,8}\s\/\s.+\s\/\s.+/;
 
+
+// Validate Zip Code (See if the user selected a valid value from the dropdown)
+function validateString(str, regExp) {
+  return Boolean(regExp.exec(str));
+}
+
+function validateInput(e) {
+  let value = e.target.value;
+  if (validateString(value, zipRegExp)) {
+    e.target.classList.remove('invalid')
+    e.target.classList.add('valid')
+  } else {
+    e.target.classList.add('invalid')
+  }
+
+}
+
+// 9484 / Pereszteg / Hungary
 // **************************************************************************
 // ------------------------------FUNCTIONS-----------------------------------
 // **************************************************************************
-
 
 
 
@@ -181,14 +199,17 @@ function addToDropDown(locations) {
 
 async function handleLocationDropdown(e) {
   const value = e.target.value;
-  instance.updateData({});
+  
   // check for zip code entry is valid(number)
-  if(isNaN(value.slice(0, 4))) {e.target.classList.add('invalid')}
-  else {e.target.classList.remove('invalid');};
-
+  
   //Only fetch if there is at least 4 number
   if(value.length >= 4 && !isNaN(value)) {
     try {
+      let key = String(`${value} Loading... Please wait.`)
+      const obj = {};
+      obj[key] = null;
+      console.log(obj);
+      instance.updateData(obj)
       let locations = await getLocations(value);
       possibleLocations = processLocations(locations);
       addToDropDown(possibleLocations);
@@ -200,9 +221,10 @@ async function handleLocationDropdown(e) {
 
 // ******************__MAIN FUNCTION__*********************
 async function init() {
-
-  locationField.addEventListener('keyup', handleLocationDropdown);
+  locationField.oninput = handleLocationDropdown;
+  locationField.onchange = validateInput;
   submitBtn.addEventListener('click', handleSubmit);
+
   try {
     const entries = await getPageData('/get-database')
     if (entries) {renderPageEntries(entries)}
