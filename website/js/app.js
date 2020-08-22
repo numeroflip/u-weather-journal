@@ -5,6 +5,8 @@ const locationField = document.getElementById('zip');
 const textareaField = document.getElementById('feelings');
 const submitBtn = document.getElementById('generate');
 const entriesHeader = document.getElementById('entries-header');
+const locationHelper = document.getElementById('location-helper')
+const formWrapper = document.getElementById('main-form')
 
 // API and data related variables
 let pageData, possibleLocations;
@@ -22,31 +24,47 @@ const apiData = {
 const elem = document.querySelector('.autocomplete');
 const instance = M.Autocomplete.init(elem);
 const zipRegExp = /\d{4,8}\s\/\s.+\s\/\s.+/;
+const validZipRegExp = /\d{4,8}/
 
 
+// **************************************************************************
+// ------------------------------FUNCTIONS-----------------------------------
+// **************************************************************************
+
+// **********************-VALIDATIONS-********
 // Validate Zip Code (See if the user selected a valid value from the dropdown)
 function validateString(str, regExp) {
   return Boolean(regExp.exec(str));
 }
 
-function validateInput(element) {
-  const value = element.value;
-  console.log(value)
+function validateLocationInput(element) {
+  const value = String(element.value);
+
+  locationHelper.dataset.error = validZipRegExp.test(value)
+    ? "Please select your location from the dropdown menu"
+    : "Please provide a valid zip code"
+
   if (validateString(value, zipRegExp)) {
     element.classList.remove('invalid')
     element.classList.add('valid')
   } else {
+    element.classList.remove('valid')
     element.classList.add('invalid')
   }
 
+
 }
 
-// 9484 / Pereszteg / Hungary
-// **************************************************************************
-// ------------------------------FUNCTIONS-----------------------------------
-// **************************************************************************
+function areInputsValid (inputArr) {
+  if (inputArr.some(input => !input.classList.contains("valid"))) {
+    return false
+  } else {return true}
+}
 
 
+function clearFields(fieldsArr) {
+  fieldsArr.forEach(field => field.value = "");
+}
 
 // ---------------------HTML and DOM related---------------
 const getEntryHTML = ({
@@ -161,32 +179,45 @@ const postData = async ( url = '', data = {}) => {
 
 async function handleSubmit(e) {
 
+
   e.preventDefault();
-  // Problem: there are many cities under the same zip code, but we need a specific location key...
-  // get back the selected city from the input field
-  const city = locationField.value.split(" / ")[1];
-  const index = possibleLocations.map((location) => location.city).indexOf(city);
-  const location = possibleLocations[index];
-  // Find the location key from the array of zip code matching locations based on the city name.
-  const key = location.locationKey;
 
-  try {
-    const weather = await getWeather(key)
-    const entryData = {
-      author: nameField.value,
-      post_content: textareaField.value,
-      city: location.city,
-      country: location.country,
-      posting_date: new Date().toISOString(),
-      weather_code: weather.icon,
-      weather_description: weather.description,
-      temp_cels: weather.tempCels,
-    };
-    postData('/addEntry', entryData);
-    insertEntryHTML(entryData);
+  if (areInputsValid([nameField, locationField, textareaField])) {
+    // Problem: there are many cities under the same zip code, but we need a specific location key...
+    // get back the selected city from the input field
+    const city = locationField.value.split(" / ")[1];
+    const index = possibleLocations.map((location) => location.city).indexOf(city);
+    const location = possibleLocations[index];
+    // Find the location key from the array of zip code matching locations based on the city name.
+    const key = location.locationKey;
+  
+    try {
+      const weather = await getWeather(key)
+      const entryData = {
+        author: nameField.value,
+        post_content: textareaField.value,
+        city: location.city,
+        country: location.country,
+        posting_date: new Date().toISOString(),
+        weather_code: weather.icon,
+        weather_description: weather.description,
+        temp_cels: weather.tempCels,
+      };
+      postData('/addEntry', entryData);
+      insertEntryHTML(entryData);
+  
+    } catch(err) {console.log(err)}
 
-  } catch(err) {console.log(err)}
+  } 
 };
+
+function handleBtnState() {
+  console.log('HandleBtnState')
+  if (areInputsValid([nameField, locationField, textareaField])) {
+    console.log ('inputs are valid')
+    submitBtn.disabled = false
+  } else {submitBtn.disabled = true}
+}
 
 // *********_DROPDOWN (Location autocomplete) *************
 function addToDropDown(locations) {
@@ -209,7 +240,6 @@ async function handleLocationDropdown(e) {
       let key = String(`${value} Loading... Please wait.`)
       const obj = {};
       obj[key] = null;
-      console.log(obj);
       instance.updateData(obj)
       let locations = await getLocations(value);
       possibleLocations = processLocations(locations);
@@ -222,9 +252,11 @@ async function handleLocationDropdown(e) {
 
 // ******************__MAIN FUNCTION__*********************
 async function init() {
-  locationField.value = "";
+  handleBtnState()
+  clearFields([locationField, nameField, textareaField])
+  formWrapper.onchange = handleBtnState
   locationField.oninput = handleLocationDropdown;
-  locationField.onchange = (e) => validateInput(e.target);
+  locationField.onchange = (e) => validateLocationInput(e.target);
   submitBtn.addEventListener('click', handleSubmit);
 
   try {

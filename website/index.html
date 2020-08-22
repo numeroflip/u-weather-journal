@@ -28,7 +28,7 @@
     <!-- ----------------__MAIN---------------------- -->
     <main>
         <article class="container section" id="add-entry-section">
-           <form class="card-panel row" action="">
+           <form class="card-panel row" id="main-form" action="">
 
                 <h2 class="col s12 center">Add a Journal entry</h5>
 
@@ -42,6 +42,7 @@
                   <i class="material-icons prefix">location_on</i>
                   <input type="text" autocomplete="off" placeholder="" id="zip" class="autocomplete" >
                   <label for="autocomplete-input">Enter Zip Code Here</label>
+                  <span class="helper-text" id="location-helper" data-error="please select a value from the dropdown menu" data-success="">Type at least 4 numbers, then select from the dropdown menu.</span>
                 </div>
 
                 <div class="input-field col s12">
