@@ -34,7 +34,15 @@ const validZipRegExp = /\d{4,8}/
 // **********************-VALIDATIONS-********
 // Validate Zip Code (See if the user selected a valid value from the dropdown)
 function validateString(str, regExp) {
-  return Boolean(regExp.exec(str));
+  return regExp.test(str);
+}
+
+function areInputsValid () {
+  let ans = false;
+  if (zipRegExp.test(locationField.value) && nameField.value.length > 0 && textareaField.value.length > 0) {
+    ans = true
+  }
+  return ans;
 }
 
 function validateLocationInput(element) {
@@ -55,11 +63,7 @@ function validateLocationInput(element) {
 
 }
 
-function areInputsValid (inputArr) {
-  if (inputArr.some(input => !input.classList.contains("valid"))) {
-    return false
-  } else {return true}
-}
+
 
 
 function clearFields(fieldsArr) {
@@ -182,7 +186,9 @@ async function handleSubmit(e) {
 
   e.preventDefault();
 
-  if (areInputsValid([nameField, locationField, textareaField])) {
+  if (
+    areInputsValid()
+    ) {
     // Problem: there are many cities under the same zip code, but we need a specific location key...
     // get back the selected city from the input field
     const city = locationField.value.split(" / ")[1];
@@ -213,10 +219,10 @@ async function handleSubmit(e) {
 
 function handleBtnState() {
   console.log('HandleBtnState')
-  if (areInputsValid([nameField, locationField, textareaField])) {
+  if (areInputsValid()) {
     console.log ('inputs are valid')
     submitBtn.disabled = false
-  } else {submitBtn.disabled = true}
+  } else { console.log('inputs are invalid') ; submitBtn.disabled = true}
 }
 
 // *********_DROPDOWN (Location autocomplete) *************
@@ -255,6 +261,7 @@ async function init() {
   handleBtnState()
   clearFields([locationField, nameField, textareaField])
   formWrapper.onchange = handleBtnState
+  formWrapper.onkeyup = handleBtnState
   locationField.oninput = handleLocationDropdown;
   locationField.onchange = (e) => validateLocationInput(e.target);
   submitBtn.addEventListener('click', handleSubmit);
