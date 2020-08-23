@@ -218,11 +218,9 @@ async function handleSubmit(e) {
 };
 
 function handleBtnState() {
-  console.log('HandleBtnState')
   if (areInputsValid()) {
-    console.log ('inputs are valid')
     submitBtn.disabled = false
-  } else { console.log('inputs are invalid') ; submitBtn.disabled = true}
+  } else { submitBtn.disabled = true}
 }
 
 // *********_DROPDOWN (Location autocomplete) *************
